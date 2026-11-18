@@ -1,0 +1,227 @@
+\documentclass[12pt, a4paper]{report}
+
+% 1. Use Times New Roman as the standard font.
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+
+% 5. Use black font colour only.
+\usepackage{xcolor}
+\usepackage[colorlinks=false, pdfborder={0 0 0}, hidelinks]{hyperref}
+
+% 3. Chapter headings must be in 14-point, bold, and ALL CAPITAL LETTERS (Centre-Aligned).
+% 4. Sub-headings should be in 12-point, bold.
+\usepackage{titlesec}
+
+% Chapter formatting: 14pt (which is \fontsize{14}{16.8}), Bold, All Caps, Centered
+\titleformat{\chapter}[display]
+  {\centering\fontsize{14}{16.8}\bfseries}
+  {\MakeUppercase{\chaptertitlename\ \thechapter}}
+  {10pt}
+  {\MakeUppercase}
+
+% Section formatting: 12pt, Bold
+\titleformat{\section}
+  {\fontsize{12}{14.4}\bfseries}
+  {\thesection}
+  {1em}
+  {}
+
+% Subsection formatting: 12pt, Bold
+\titleformat{\subsection}
+  {\fontsize{12}{14.4}\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+% Subsubsection formatting: 12pt, Bold
+\titleformat{\subsubsection}
+  {\fontsize{12}{14.4}\bfseries}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+% 6. Figure captions should be in 9-point font, placed below the figure (Centre-Aligned).
+% 7. Table captions should be in a 9-point font, placed above the table (Centre-Aligned).
+\usepackage{caption}
+% Define a custom 9pt font size for captions
+\DeclareCaptionFont{ninept}{\fontsize{9}{10.8}\selectfont}
+\captionsetup[figure]{font=ninept, position=bottom, justification=centering}
+\captionsetup[table]{font=ninept, position=top, justification=centering}
+
+% 8. Page numbers should be placed at the centre of the footer.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt} % remove the header line
+\cfoot{\thepage} % center footer page number
+
+% Redefine the 'plain' style (used by default on chapter starting pages)
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \cfoot{\thepage}
+}
+
+% 10. Maintain 1.15 line spacing for paragraphs.
+\usepackage{setspace}
+\setstretch{1.15}
+
+% 16. Attachments (PDFs)
+\usepackage{pdfpages}
+
+% For adding border on the title page (13)
+\usepackage{tikz}
+
+% Placeholder text for demonstrating structure (to reach 75 pages requirement)
+\usepackage{lipsum}
+
+% Page geometry to set standard margins
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+% 12. Exclude the first page from the page numbering
+\begin{titlepage}
+\thispagestyle{empty}
+
+% 13. No borders should be used on any page except the title page.
+\begin{tikzpicture}[remember picture, overlay]
+  \draw[line width=1.5pt] 
+    ([xshift=1cm,yshift=-1cm]current page.north west) 
+    rectangle 
+    ([xshift=-1cm,yshift=1cm]current page.south east);
+\end{tikzpicture}
+
+\begin{center}
+    \vspace*{2cm}
+    
+    {\fontsize{18}{21.6}\bfseries \MakeUppercase{FraudGuard AI: Advanced Fraud Detection}}\\[1.5cm]
+    
+    {\fontsize{14}{16.8} A Major Project Report}\\[0.5cm]
+    {\fontsize{12}{14.4} submitted in partial fulfillment of the requirements}\\[0.5cm]
+    {\fontsize{12}{14.4} for the degree of}\\[1.5cm]
+    
+    {\fontsize{14}{16.8}\bfseries BACHELOR OF TECHNOLOGY}\\[0.5cm]
+    {\fontsize{12}{14.4} in}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries COMPUTER SCIENCE AND ENGINEERING}\\[1.5cm]
+    
+    {\fontsize{12}{14.4} by}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries Your Name (Your Roll No.)}\\[1.5cm]
+    
+    {\fontsize{12}{14.4} Under the Supervision of}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries Guide Name}\\[0.5cm]
+    {\fontsize{12}{14.4} Designation}\\[2cm]
+    
+    % Uncomment and adjust if you have a university logo
+    % \includegraphics[width=0.2\textwidth]{logo.png}\\[1cm]
+    
+    {\fontsize{14}{16.8}\bfseries DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries UNIVERSITY OR COLLEGE NAME}\\[0.5cm]
+    {\fontsize{12}{14.4} City, State - Pincode}\\[0.5cm]
+    {\fontsize{12}{14.4} Month, Year}
+    
+\end{center}
+\end{titlepage}
+
+% 11. In the Table of Contents, all preliminary pages should be numbered using Roman numerals.
+\pagenumbering{roman}
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+% 15. All text must be justified (LaTeX default)
+This project presents FraudGuard AI, an advanced machine learning approach to detect fraudulent transactions...
+\clearpage
+
+\chapter*{Acknowledgement}
+\addcontentsline{toc}{chapter}{Acknowledgement}
+I would like to express my gratitude to...
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\clearpage
+
+% List of Tables
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+\clearpage
+
+% Switch to Arabic numbering for the main report chapters
+\clearpage
+\pagenumbering{arabic}
+
+% CHAPTERS
+
+\chapter{Introduction}
+\section{Background}
+Background information regarding fraud detection and machine learning techniques.
+\subsection{Motivation}
+Why this project is important.
+
+\begin{figure}[htbp]
+    \centering
+    % \includegraphics[width=0.5\textwidth]{example-image}
+    \rule{4cm}{3cm} % Placeholder for an image
+    \caption{This is an example figure caption. It is 9-point font, below the figure, and centre-aligned.}
+    \label{fig:example}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{This is an example table caption. It is 9-point font, above the table, and centre-aligned.}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Header 1 & Header 2 & Header 3 \\
+        \hline
+        Data 1 & Data 2 & Data 3 \\
+        Data 4 & Data 5 & Data 6 \\
+        \hline
+    \end{tabular}
+    \label{tab:example}
+\end{table}
+
+\chapter{Literature Review}
+\lipsum[1-5] % Placeholder text
+
+\chapter{Methodology}
+\lipsum[6-10]
+
+\chapter{Implementation Details}
+\lipsum[11-15]
+
+\chapter{Results and Discussion}
+\lipsum[16-20]
+
+\chapter{Conclusion and Future Scope}
+\lipsum[21-25]
+
+% 14. The report should have a minimum of 75 pages. 
+% To meet this, make sure to replace \lipsum with your actual detailed content.
+
+% 9. In the Table of Contents, the References section should appear at the end.
+\clearpage
+\addcontentsline{toc}{chapter}{References}
+\begin{thebibliography}{99}
+    \bibitem{ref1}
+    Author Name(s), ``Title of the Paper/Book,'' \textit{Journal/Publisher Name}, Vol., No., pp., Year.
+    
+    \bibitem{ref2}
+    Another Author, ``Another Title,'' \textit{Conference Name}, Year.
+\end{thebibliography}
+
+% 16. Acceptance proof (if applicable), similarity index report and the research paper must be attached at the end of the report.
+\clearpage
+% Add these to TOC if desired, or just attach them
+% Uncomment the following lines and ensure the PDF files are in the same directory
+
+% \includepdf[pages=-]{Acceptance_Proof.pdf}
+% \includepdf[pages=-]{Similarity_Index_Report.pdf}
+% \includepdf[pages=-]{Research_Paper.pdf}
+
+\end{document}

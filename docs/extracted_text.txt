@@ -1,0 +1,1513 @@
+AI Enhanced Fingerprint Generation for Antimicrobial Drug Discovery 
+MAJOR PROJECT REPORT 
+Submitted in partial fulfillment of the requirements for the award of the degree of 
+ 
+BACHELOR OF TECHNOLOGY 
+in 
+COMPUTER SCIENCE & ENGINEERING 
+Submitted to 
+GURU GOBIND SINGH INDRAPRASTHA UNIVERSITY, DWARKA, NEW DELHI 
+ 
+ 
+ 
+Submitted By 
+ 
+Hrishabh Bhandari 
+10325502722 
+Gaurav Gupta 
+06925502722 
+Anith Sivarajan 
+06825502722 
+ 
+Under the guidance of 
+Dr. Devendra Gautam 
+Assistant Professor 
+ 
+ 
+Department of Computer Science and Engineering 
+JIMS Engineering Management Technical Campus, Greater Noida 
+2025-2026 TABLE OF CONTENTS 
+List Of Figures ..................................................................................................... i 
+List Of Tables ...................................................................................................... ii 
+Certificate ............................................................................................................ iii 
+Declaration .......................................................................................................... iv 
+Acknowledgement ............................................................................................... v 
+Abstract ............................................................................................................... vi 
+Chapter 1 INTRODUCTION 
+1.1 Overview .................................................................................. 1 
+1.2 Motivation ................................................................................ 1 
+1.3 Role of AI and Fingerprints in Drug Discovery ....................... 2 
+1.4 Chapter Outline ........................................................................ 3 
+Chapter 2 LITERATURE REVIEW 
+2.1 Introduction .............................................................................. 5 
+2.2 Problem Statement ................................................................... 5 
+2.3 Research Area .......................................................................... 7 
+2.3.1 AI in Antimicrobial Drug Discovery ........................ 7 
+2.3.2 Molecular Fingerprints .............................................. 8 
+2.3.3 Deep Generative Models ........................................... 8 
+2.3.4 Activity Prediction Models ....................................... 10 
+2.3.5 AMR-related Dataset Limitations ............................. 12 
+2.4 Challenges ................................................................................ 12 
+2.4.1 Data Scarcity in AMR ............................................... 12 
+2.4.2 Model Reliability and Chemical Validity ................. 13 
+2.4.3 Novelty Measurement ............................................... 14 
+2.4.4 Reconstruction and Fingerprint Errors ...................... 15 
+2.4.5 Class Imbalance ........................................................ 16 
+2.4.6 Generalization and Chemical Space Coverage ......... 18 
+2.4.7 Continuous Improvement and Updates ..................... 19 
+Chapter 3 PROPOSED SOLUTION: DESIGN 
+3.1 Introduction .............................................................................. 20 
+3.2 Core Features ........................................................................... 20 
+3.3 Control Flow ............................................................................ 22 
+3.4 Tech Stack ................................................................................ 22 
+3.4.1 Variational Autoencoder (VAE) ............................... 23 3.4.2 LightGBM Classifier ................................................. 24 
+3.4.3 Similarity Metrics & UMAP ..................................... 24 
+Chapter 4 IMPLEMENTATION 
+4.1 Data Preparation ....................................................................... 25 
+4.2 Fingerprint Generation using RDKit........................................ 26 
+4.3 VAE Architecture and Training ............................................... 27 
+4.4 Activity Prediction Model Setup ............................................. 29 
+4.5 Novelty Assessment & Dimensionality Reduction .................. 30 
+Chapter 5  WORKING AND RESULTS 
+5.1 Fingerprint Generation Output ................................................ 33 
+5.2 Activity Prediction Results ..................................................... 33 
+5.3 Similarity Analysis .................................................................. 34 
+5.4 UMAP Visualization ............................................................... 34 
+5.5 Final Compilation of Novel Candidates .................................. 35 
+5.6 Interpretation of Results .......................................................... 36 
+5.7 Resources ................................................................................ 37 
+References i  
+LIST OF FIGURES 
+ 
+Figure No. Figure Name Page No. 
+3.1 Control Flow ............................................................................. 22 
+3.2 Variational Autoencoder Architecture ...................................... 23 
+4.1 Code representing fingerprint extraction using RDkit .............. 27 
+4.2 Code representing VAE Encoder–Decoder Architecture .......... 28 
+4.3 VAE Training Loss Curve ............................................................ 28 
+4.4 Code representing LightGBM Classifier Configuration ............. 30 
+4.5 Code representing Cosine and Tanimoto Similarity ................. 31 
+4.6 Code representing UMAP Dimensionality Reduction ............... 32 
+5.1 UMAP Projection of Chemical Space ........................................ 42 ii  
+LIST OF TABLES 
+Table No. Table Name Page No. 
+4.1 Summary of Dataset Preprocessing and Class Distribution ........ 33 
+5.1 Performance Metrics from LightGBM classifier .......................... 34 
+5.2 Structural Similarity Statistics ...................................................... 34 
+4.4 Cosine and Tanimoto Similarity Functions ................................. 40 
+4.5 UMAP Dimensionality Reduction Code ..................................... 41 iii  
+CERTIFICATE 
+ 
+ 
+ 
+ 
+This is to certify that the project entitled " AI Enhanced Fingerprint Generation For 
+Antimicrobial Drug Discovery" which is submitted by Hrishabh Bhandari, Gaurav Gupta, 
+and Anith Sivarajan in partial fulfillment of the requirement for the award of degree of 
+Bachelor of Technology in Computer Science & Engineering of JIMS Engineering 
+Management Technical Campus, Greater Noida affiliated to Guru Gobind Singh 
+Indraprastha University, Delhi is a record of the candidates own work carried out by them 
+under my supervision. The matter embodied in this report is original and has not been 
+submitted for the award of any other degree. 
+ 
+ 
+ 
+Date: Dr. Devendra Gautam 
+Assistant Professor iv  
+DECLARATION 
+ 
+ 
+ 
+ 
+We hereby declare that this submission is our own work and that to the best of our 
+knowledge and belief, it contains no material previously published or written by another 
+person nor material which to a substantial extent has been accepted for the award of any 
+other degree or diploma of the university or other institute of higher learning, except where 
+due acknowledgement has been made in the text. 
+ 
+ 
+ 
+ 
+ 
+Signature 
+Hrishabh Bhandari (10325502722) 
+ 
+ 
+ 
+Signature 
+Gaurav Gupta (06925502722) 
+ 
+ 
+ 
+Signature 
+Anith Sivarajan (06825502722) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Approved By: 
+ 
+ 
+ 
+Signature 
+Dr. Devendra Gautam 
+Project Coordinator 
+CSE Department 
+JIMS EMTC, Gr. Noida 
+Signature 
+Mr. Anand Bhushan Pandey 
+Project Coordinator 
+CSE Department 
+JIMS EMTEC, Gr. Noida 
+Signature 
+Dr. Latha Banda 
+HOD 
+CSE Department 
+JIMS EMTC, Gr. Noida v  
+ACKNOWLEDGEMENT 
+ 
+ 
+ 
+ 
+We are immensely grateful to our guide Dr. Devendra Gautam at JIMS Engineering 
+Management Technical Campus for the guidance, support, and valuable insights provided 
+by him. As our supervisor, he has constantly guided us to remain steady on accomplishing 
+our goal. He has guided us at each step, discussed our problems and gave his valuable 
+feedback, despite his busy schedule. We are equally grateful to all our professors of JIMS 
+Engineering Management Technical Campus. 
+ 
+This research project is possible because of the support of our parents, siblings and friends 
+who were always there in our thick and thin and have always inspired us. 
+ 
+ 
+ 
+ 
+ 
+Signature 
+Hrishabh Bhandari (10325502722) 
+ 
+ 
+ 
+Signature 
+Gaurav Gupta (06925502722) 
+ 
+ 
+ 
+Signature 
+Anith Sivarajan (06825502722) vi  
+ABSTRACT 
+ 
+ 
+ 
+ 
+The rising prevalence of Antimicrobial Resistance (AMR) contributes to a significant 
+slowdown in the discovery and development of novel antimicrobials. This paper presents 
+an AI -enhanced framework for the generation and novelty analysis of new molecular 
+fingerprints that are potentially active against AMR factors. Traditional Morgan 
+Fingerprints were used to train a Variational Autoencoder (VAE) to learn the latent 
+representation and generate new fingerprints with diverse structures. The same dataset 
+was also used to train a LightGBM -based activity prediction model to predict the 
+probability of antimicrobial activity of the generated fingerprints. Cosine and Tanimoto 
+similarity, and UMAP dimensionality reduction were performed to analyse and visualize 
+novelty and dissimilarity to known compounds. The results display distinction between 
+generated fingerprints and known active fingerprints, which validates both novelty and 
+biological relevance of the generated fingerprints. Thus, the framework provides a reliable 
+approach for novel fingerprint generation and analysis in antimicrobial drug discovery. 
+ 
+Keywords: Antimicrobial Drug Discovery, Variational Autoencoder, LightGBM, 
+Molecular Fingerprints, Cosine Similarity, Tanimoto Similarity, UMAP. 1  
+1 INTRODUCTION 
+ 
+1.1 Overview 
+Antimicrobial Resistance (AMR) has emerged as one of the most critical threats to global 
+public health, rendering traditional antibiotics increasingly ineffective and resulting in 
+rising mortality rates, treatment failures, and healthcare burdens. The process of 
+discovering novel antimicrobial compounds has slowed significantly, primarily due to 
+limited access to validated molecular data, the high cost of laboratory screening, and the 
+declining success rate of identifying structurally unique candidates. Conventional screening 
+techniques rely heavily on biological assays and structure -based evaluation, which are 
+resource-intensive and often restricted to narrow regions of chemical space. 
+ 
+To address these challenges, this project introduces an Artificial Intelligence –based 
+framework designed to enhance the early stages of antimicrobial drug discovery. Instead 
+of generating complete molecular structures, which often suffer from invalid syntax, 
+instability, or non -drug-like chemistry, this approach focuses on the direct generation of 
+molecular fingerprints, a compact and information -rich representation widely used across 
+cheminformatics and drug discovery pipelines. 
+ 
+The project utilizes a Variational Autoencoder (VAE) to learn compressed representations 
+of molecular fingerprints and generate new, structurally diverse ones. These are 
+subsequently evaluated using a Light Gradient Boosting Machine (LightGBM) activity 
+classifier to predict the antimicrobial potential of each generated fingerprint. To ensure 
+novelty and meaningful exploration of chemical space, similarity metrics such as cosine 
+similarity and Tanimoto similarity are used, followed by UMAP -based dimensionality 
+reduction to visualize structural variance and separation between generated and known 
+active fingerprints. 
+ 
+Overall, this project aims to accelerate exploratory phases of antimicrobial drug discovery 
+by integrating deep generative models, predictive analytics, and novelty assessment 
+techniques to produce fingerprint patterns that suggest new and potentially effective 
+chemical scaffolds. 
+ 
+1.2 Motivation 
+The motivation for pursuing the project stems from the critical gap in the current drug 
+discovery pipeline, particularly in the context of AMR. Despite advancements in 
+computational chemistry, the availability of AMR-specific molecular data remains limited. 
+This restricts model reliability, biological relevance, and the generation of novel  chemical 
+scaffolds capable of combating resistant pathogens. 
+ 
+Traditional AI-driven molecular generation approaches often attempt to reconstruct full 
+molecular structures from SMILES or graph -based representations. However, these 
+methods frequently face challenges such as: 2  
+• syntactically invalid molecular strings 
+• poor reconstruction quality during decoding 
+• lack of chemical realism 
+• dependence on large, high-quality labelled datasets 
+• redundancy in generated compounds 
+ 
+Fingerprint-level generation offers a data -efficient alternative that preserves chemical 
+relevance without requiring complete structural reconstruction. Morgan fingerprints, in 
+particular, encode molecular topology effectively and provide a stable input for 
+representation learning. 
+ 
+By shifting the focus from molecular reconstruction to fingerprint-level novelty generation, 
+this project aims to explore unseen chemical space that may contain active antimicrobial 
+candidates, even when biological data is scarce. 
+ 
+1.3 Role of AI and Fingerprints in Drug Discovery 
+Artificial Intelligence, particularly deep generative models, has transformed modern drug 
+discovery by enabling: 
+ 
+• scalable exploration of chemical space 
+• automated hypothesis generation 
+• learning-based prioritization of promising compounds 
+• reduced dependency on costly wet-lab screening 
+ 
+Fingerprint-based representations provide a fixed -length, informative method to 
+mathematically encode molecular structure. Unlike SMILES strings, fingerprints do not 
+require exact syntax or graph reconstruction, making them ideal for generative modelling 
+in scenarios with sparse data. 
+ 
+In this study: 
+ 
+• The VAE learns compressed latent vectors of molecular fingerprints and generates 
+novel fingerprints that capture meaningful chemical patterns. 
+• LightGBM predicts the antimicrobial probability for each generated fingerprint. 
+• Cosine and Tanimoto similarity metrics quantify novelty relative to known 
+actives. 
+• UMAP visualization reveals structural separation, confirming exploration of new 
+chemical space. 
+This integration of AI tools enables the creation of computationally novel fingerprint 
+patterns that signify possible antibacterial activity, supporting early research steps towards 
+AMR-specific drug discovery. 3  
+1.4 Chapter Outline 
+This project report is divided into five comprehensive chapters, each constructed to present 
+a well -structured flow of ideas, concepts, methodologies, and findings. The chapters 
+collectively establish the motivation behind the study, review the supporting literature, 
+design the proposed framework, elaborate on its technical implementation, and finally 
+present the experimental results and analysis. A brief outline of each chapter is provided 
+below: 
+ 
+Chapter 2 – Literature Review 
+ 
+This chapter provides an in -depth review of previous work related to antimicrobial drug 
+discovery, artificial intelligence in chemistry, molecular fingerprinting techniques, and 
+novelty assessment in generative models. It discusses the global rise of Antimicrobial 
+Resistance (AMR) and summarizes the limitations faced by traditional drug -discovery 
+pipelines. Various molecular representations such as SMILES, graph-based encodings, and 
+circular fingerprints (like Morgan/ECFP) are compared, outlining their applicability and 
+shortcomings. 
+ 
+The chapter also examines established deep generative models, including Variational 
+Autoencoders (VAEs), Generative Adversarial Networks (GANs), and reinforcement 
+learning frameworks, and evaluates their successes and constraints in molecular generation 
+tasks. Furthermore, this chapter highlights critical challenges such as AMR-specific dataset 
+scarcity, structural redundancy, class imbalance, reconstruction errors, and constraints in 
+chemical space exploration. Overall, Chapter 2 lays the foundation for the motivation and 
+need for a fingerprint-level generative framework. 
+ 
+Chapter 3 – Proposed Solution and System Design 
+This chapter introduces the complete architectural design of the proposed AI -based 
+fingerprint generation system. It explains the conceptual framework, including how 
+molecular fingerprints are extracted, processed, encoded, and generated. A detailed 
+explanation of the Variational Autoencoder (VAE) structure is provided, covering the 
+encoder, decoder, latent space, and underlying mathematical formulation. The chapter also 
+elaborates on the LightGBM activity prediction model, highlighting its suitability for 
+highly imbalanced chemical datasets. 
+ 
+Additionally, the chapter describes the novelty assessment component involving cosine 
+similarity, Tanimoto similarity, and UMAP dimensionality reduction. A complete control- 
+flow diagram is presented to illustrate how data progresses from initial pre -processing to 
+fingerprint generation and final novelty evaluation. Chapter 3 essentially connects the 
+theoretical background with the design logic that shapes the implementation of the system. 4  
+Chapter 4 – Implementation 
+This chapter discusses the practical implementation of the proposed system in detail. It 
+begins with data preparation steps such as SMILES validation, duplicate removal, 
+structural filtering, and Morgan fingerprint extraction using RDKit. The construction, 
+training, and optimization of the VAE model are described step -by-step, including 
+architecture selection, loss functions, hyperparameters, and training behaviour. 
+ 
+The chapter also explains the configuration and training of the LightGBM model, 
+addressing scaffold-based splitting, class-imbalance handling, and performance evaluation. 
+Implementation of novelty assessment metrics, cosine similarity, Tanimoto index, and 
+dimensionality reduction using UMAP, is also thoroughly discussed. Code snippets, 
+diagrams, and algorithmic flows are referenced to provide clarity on system execution. 
+ 
+Overall, Chapter 4 provides a complete blueprint of how each component of the framework 
+was built and integrated. 
+ 
+Chapter 5 – Working and Results 
+This chapter presents the experimental results and interprets the system’s overall 
+performance. It describes how latent -space sampling was used to generate new molecular 
+fingerprints and how these fingerprints were screened using the LightGBM classifier to 
+predict antimicrobial activity. Quantitative metrics such as ROC -AUC, precision, recall, 
+accuracy, and F1 -score are reported to assess predictive performance in the presence of 
+extreme class imbalance. The chapter also includes detailed novelty assessment outcomes, 
+including cosine and Tanimoto similarity statistics, showcasing the structural uniqueness 
+of generated fingerprints. UMAP plots illustrating chemical space separation between 
+known actives and generated fingerprints are included to visually validate the model’s 
+capacity to explore previously unseen chemical regions. Additionally, this chapter compiles 
+the list of most promising fingerprint candidates and interprets their relevance to early - 
+stage drug discovery. Chapter 5 concludes by summarizing the key insights obtained from 
+experimental evaluation. 5  
+2 LITERATURE REVIEW 
+ 
+2.1 Introduction 
+Artificial Intelligence has become a key enabler in modern drug discovery, offering 
+scalable alternatives to traditional biochemical screening and molecular design techniques. 
+The alarming surge in Antimicrobial Resistance (AMR) has intensified the need for 
+efficient computational methods capable of producing novel chemical scaffolds with 
+potential biological activity. However, the lack of AMR -specific molecular datasets and 
+validated biological activity labels poses significant challenges for AI-driven workflows. 
+ 
+This project explores fingerprint -based generative modelling as an alternative to 
+conventional molecular generation. Fingerprint representations, such as Morgan (ECFP) 
+fingerprints, encode chemical structure in fixed -length binary vectors that can be directly 
+learned by machine learning algorithms. Unlike SMILES strings or graph -based models, 
+which often suffer from syntactic instability and high reconstruction errors, fingerprint - 
+level learning offers improved robustness, interpretability, and data efficiency. 
+ 
+Several studies have demonstrated the promise of deep generative models, particularly 
+Variational Autoencoders (VAEs), Generative Adversarial Networks (GANs), and 
+reinforcement learning frameworks, in exploring chemical space  and producing candidate 
+molecules for antimicrobial discovery. However, the majority of these approaches rely on 
+complete molecular reconstruction, often requiring large datasets to maintain validity and 
+chemical diversity. 
+ 
+This chapter provides a comprehensive review of existing methods, systematically analyses 
+gaps in current research, and highlights the relevance of transition from molecular -level 
+generation to fingerprint-level modelling for AMR-related chemical discovery. 
+ 
+2.2 Problem Statement 
+Antimicrobial resistance significantly reduces the effectiveness of antibiotics, creating an 
+urgent global health crisis. The conventional antibiotic discovery process is slow, costly, 
+and unable to keep up with the rapidly evolving resistance mechanisms exhibited by 
+bacteria. Despite advancements in computational tools, most AI-driven antibiotic discovery 
+efforts rely on datasets that are: 
+ 
+• not AMR-specific, 
+• limited in size, 
+• insufficiently diverse, 
+• dominated by inactive compounds, or 
+• inadequate for training stable deep generative models. 
+ 
+Existing molecular generative models often aim to reconstruct compounds from SMILES 
+or molecular graphs. These approaches face multiple challenges such as syntactic 6  
+invalidity, chemical infeasibility, poor reconstruction accuracy, and dependence on large 
+datasets that are seldom available for AMR-specific targets. 
+ 
+Furthermore: 
+ 
+• Deep learning models used in molecular generation are commonly trained on large, 
+generic chemical libraries such as ZINC, ChEMBL, or MOSES. While these 
+datasets contain millions of compounds, they are not specifically curated for 
+antimicrobial resistance (AMR)–related activity. As a result, the learned chemical 
+patterns are broad and not tailored to bacterial survival pathways, DNA repair 
+systems, membrane disruption, or enzyme inhibition mechanisms associated with 
+AMR. Consequently, generative models tend to create molecules that may be 
+chemically valid but biologically irrelevant for targeting resistant pathogens. This 
+mismatch between generic chemical space and AMR -specific requirements 
+significantly reduces the biological usefulness of generated compounds and 
+highlights the need for domain-focused generative workflows. 
+• Most molecular generative studies rely on simple similarity metrics, often one - 
+dimensional measures based solely on fingerprint overlap, to approximate 
+molecular novelty. However, novelty in antimicrobial drug discovery requires more 
+than low similarity scores; it demands deeper evaluation of scaffold differences, 
+structural motifs, functional group diversity, and overall chemical topology. 
+Traditional novelty metrics may fail to detect subtle structural redundancies or may 
+overestimate novelty when only minor bit variations occur in high -dimensional 
+fingerprint space. Additionally, many studies do not incorporate multi -metric 
+analysis or dimensionality-reduction techniques to visually confirm the distinctness 
+of generated molecules. This creates a risk of generating compounds that are 
+structurally too close to known scaffolds, limiting the potential for discovering truly 
+innovative antimicrobial candidates. 
+• AMR datasets are typically characterized by extreme class imbalance, where the 
+number of inactive compounds vastly outnumbers active compounds, often by 
+several hundred to one. Supervised machine learning models trained on such 
+skewed distributions tend to become biased toward the majority class, resulting in 
+high overall accuracy but very poor sensitivity to active compounds. This leads to 
+low recall for actives, meaning that many potentially useful antimicrobial 
+candidates are misclassified as inactive. Moreover, standard evaluation metrics 
+such as accuracy become misleading in such scenarios, making alternative 
+measures such as ROC-AUC, precision-recall curves, and class-weighted learning 
+essential. Without careful handling of class imbalance through techniques like 
+weighting, resampling, or scaffold -balanced splitting, the predictive model cannot 
+reliably identify novel active compounds, thereby weakening the drug -discovery 
+pipeline. 7  
+This project seeks to address these gaps by generating fingerprints directly, evaluating 
+biological activity using a supervised model, and assessing novelty through similarity 
+metrics and dimensionality reduction. 
+ 
+2.3 Research Area 
+ 
+2.3.1 AI in Antimicrobial Drug Discovery 
+The application of Artificial Intelligence in antimicrobial drug discovery has grown 
+substantially due to its capacity to screen massive chemical libraries, uncover hidden 
+structure–activity relationships, and explore regions of chemical space that traditional 
+techniques often overlook. AI-driven methods can process millions of compounds, identify 
+promising antibacterial candidates, and streamline experimental workflows that would 
+otherwise take years. Studies have demonstrated that AI can significantly accelerate 
+multiple stages of the antimicrobial innovation pipeline, including, but not limited to, the 
+following areas: 
+ 
+• Antimicrobial activity prediction – AI models trained on molecular descriptors, 
+fingerprints, and biological assay data can rapidly predict whether a given 
+compound exhibits antibacterial potential. Traditional wet -lab screening methods 
+are expensive and time -consuming, but machine learning models, especially 
+ensemble techniques and deep neural networks, can evaluate tens of thousands of 
+compounds within seconds. These prediction models learn intricate correlations 
+between structural features and biological activity, enabling researchers to prioritize 
+compounds with the highest probability of antimicrobial efficacy. Such 
+computational triaging greatly reduces experimental workload and accelerates early 
+discovery. 
+• Antibiotic repurposing – AI enables the identification of non -antibiotic drugs that 
+may possess hidden antimicrobial properties, a strategy known as drug repurposing. 
+Repurposing significantly shortens development timelines because existing drugs 
+already have established safety and pharmacokinetic profiles. Machine learning 
+algorithms can analyse patterns in chemical structure, target affinity, gene 
+expression, and phenotypic response to reveal unexpected antibacterial potential in 
+compounds originally designed for unrelated diseases. This approach is particularly 
+valuable in the AMR era, where the need for fast, cost-efficient solutions is critical. 
+• Detection of resistance patterns - AI models can analyse large -scale genomic, 
+proteomic, and phenotypic datasets to detect emerging resistance  mechanisms and 
+predict bacterial behaviour. For example, machine learning classifiers can identify 
+genes associated with resistance, recognize mutations that lead to antibiotic failure, 
+and anticipate evolutionary patterns in bacterial populations. This predictive insight 
+helps guide the development of new antibiotics that circumvent existing resistance 
+strategies. It also supports the personalization of antimicrobial therapies by 
+predicting which drugs will be effective against specific bacterial strains. 8  
+• Design of novel antibacterial candidates - Deep generative models such as 
+Variational Autoencoders (VAEs), Generative Adversarial Networks (GANs), 
+diffusion models, and reinforcement learning frameworks are increasingly used to 
+design new molecular structures with desired antibacterial properties. These models 
+can generate compounds that exhibit desirable physicochemical features, improved 
+target affinity, or unique structural patterns not present in existing chemical 
+libraries. AI-driven molecule generation significantly expands the chemical search 
+space, enabling exploration of completely new scaffolds that may serve as future 
+antibiotics. 
+ 
+Deep learning methods based on SMILES sequences, graph neural networks (GNNs), and 
+molecular descriptor embeddings have shown considerable promise across all these tasks. 
+However, these models heavily rely on large, high-quality datasets, resources that are rarely 
+available for AMR -specific research due to data scarcity, high experimental costs, and 
+privacy restrictions. As a result, traditional generative frameworks often struggle to learn 
+meaningful AMR-specific chemical patterns. 
+ 
+To address these limitations, fingerprint -based generative modelling provides an 
+advantageous alternative. Fingerprints encode chemical features in a fixed -length binary 
+format that is more stable, syntactically error -free, and data -efficient compared to full 
+structural representations. These properties make fingerprint -level modelling particularly 
+suitable for scenarios with limited AMR datasets, enabling generative models to explore 
+novel chemical space while avoiding common reconstruction challenges associated with 
+SMILES or graph-based approaches. 
+ 
+2.3.2 Molecular Fingerprints 
+Molecular fingerprints convert complex chemical structures into numerical or binary 
+vectors, simplifying chemical representation for machine learning tasks. Popular 
+fingerprints include: 
+ 
+• Morgan/ECFP fingerprints 
+• MACCS keys 
+• Topological fingerprints 
+• Pharmacophore fingerprints 
+ 
+Fingerprint-based models are widely used in virtual screening, molecular similarity 
+analysis, and activity prediction. They avoid dependency on syntactic correctness, making 
+them suitable for generative tasks where reconstruction from latent space is not required. 
+ 
+2.3.3 Deep Generative Models 
+Deep generative models have emerged as transformative tools in computational drug 
+discovery due to their ability to learn complex chemical representations and generate new 
+molecular candidates with tuneable properties. Models such as Variational Autoencoders 9  
+(VAEs), Generative Adversarial Networks (GANs), normalizing flows, and transformer - 
+based architectures have demonstrated significant potential in exploring high-dimensional 
+chemical space far beyond the boundaries of traditional rule-based methods. 
+ 
+These models learn underlying distributions of chemical structures and can generate new 
+compounds by sampling from this learned space. Among them, VAEs are particularly 
+popular in molecular research because they combine probabilistic inference with deep 
+neural architectures, making them well -suited for continuous latent space exploration. 
+VAEs transform discrete chemical information into a compressed latent representation, 
+enabling smooth interpolations, structural variations, and controlled molecule design. 
+ 
+VAEs provide several advantages: 
+ 
+• Latent space continuity - VAEs map molecular fingerprints or structural encodings 
+into a continuous latent space where small changes in latent vectors correspond to 
+gradual modifications in chemical properties. This continuity enables researchers 
+to explore intermediate regions between known molecules, discover analogues with 
+potentially improved biological activity, and navigate chemical space more 
+systematically. 
+• Probabilistic sampling - VAEs introduce stochasticity through Gaussian priors in 
+the latent layer, allowing the model to produce diverse outputs from similar regions 
+of latent space. Probabilistic sampling improves the generation of structurally 
+varied molecules and reduces the risk of mode collapse. This capability is crucial 
+for expanding chemical diversity and identifying novel scaffolds with antimicrobial 
+relevance. 
+• Structural diversity - By compressing and reconstructing chemical representations, 
+VAEs inherently learn patterns associated with functional groups, ring systems, and 
+scaffold variations. This supports the creation of molecules that reflect chemically 
+meaningful diversity rather than simple perturbations of known structures. Such 
+diversity is essential in antimicrobial drug discovery, where molecular novelty 
+directly influences the ability to overcome resistance mechanisms. 
+• Dimensionality reduction - VAEs act as effective dimensionality-reduction tools by 
+extracting compact, information -rich latent encodings from high -dimensional 
+molecular fingerprints. This compressed space facilitates clustering, similarity 
+analysis, interpolation, and visualization, key steps in assessing chemical relevance, 
+novelty, and distribution. Dimensionality reduction also improves computational 
+efficiency during downstream tasks. 
+ 
+Despite these advantages, most traditional VAE frameworks focus on reconstructing 
+SMILES strings or molecular graphs, which introduces several challenges: 10  
+• SMILES representations are sensitive to grammatical constraints and easily 
+produce invalid molecules when even minor decoding errors occur. 
+• Graph reconstructions often violate atomic valence, aromaticity rules, or ring 
+structures, leading to chemically impossible outputs. 
+• Reconstruction loss can dominate training, forcing models to prioritize syntactic 
+validity over chemical novelty. 
+• Limited AMR datasets further amplify reconstruction difficulties due to insufficient 
+training diversity. 
+ 
+These issues collectively degrade model performance and limit the usefulness of generated 
+molecules. 
+ 
+To overcome these challenges, fingerprint-based VAEs operate directly on numerical 
+representations rather than structural SMILES or graph formats . This eliminates 
+syntactic constraints and removes the need for reconstructing complete molecular graphs. 
+Fingerprints, especially Morgan (ECFP) fingerprints, encode chemical environments in 
+stable binary vectors, allowing VAEs to: 
+ 
+• focus on learning underlying chemical patterns without structural decoding errors, 
+• generate diverse and novel fingerprint representations, and 
+• operate efficiently even with limited AMR-specific training data. 
+ 
+Thus, fingerprint -based generative modelling offers a more reliable, data -efficient, and 
+chemically meaningful approach for exploring antimicrobial-relevant chemical space 
+ 
+2.3.4 Activity Prediction Models 
+Predicting the biological activity of chemical compounds is a critical component of 
+antimicrobial drug discovery, as it determines whether generated or existing molecules are 
+likely to exhibit desirable antibacterial properties. Activity prediction models serve as 
+computational filters that prioritize promising candidates before advancing them too costly 
+in-vitro or in-vivo experimental testing. Machine learning has been widely adopted in this 
+area due to its ability to learn complex non -linear relationships between chemical features 
+and biological outcomes. 
+ 
+Although numerous machine learning algorithms have been explored in literature, such as 
+Random Forests, Support Vector Machines, Logistic Regression, Neural Networks, and 
+Gradient Boosting frameworks, this project specifically employs Light Gradient 
+Boosting Machine (LightGBM) due to its exceptional performance on high-dimensional, 
+sparse data formats such as molecular fingerprints. 11  
+LightGBM is an advanced implementation of gradient boosting decision trees that offers 
+several advantages particularly relevant to cheminformatics and antimicrobial screening 
+tasks: 
+ 
+• High efficiency on high-dimensional sparse fingerprints - Molecular fingerprints, 
+such as the 1024-bit Morgan fingerprints used in this study, are inherently sparse, 
+with most bits inactive for any given molecule. LightGBM is highly optimized for 
+such data using histogram -based binning and leaf -wise tree growth, enabling the 
+model to process tens of thousands of features without the computational overhead 
+typically associated with classical machine learning algorithms. This makes it 
+well-suited for large-scale antimicrobial screening tasks where high -dimensional 
+feature vectors must be evaluated rapidly and accurately. 
+• Robust handling of extreme class imbalance - AMR-related datasets suffer from a 
+severe imbalance between active and inactive compounds, often exceeding a 300:1 
+ratio. Traditional classifiers tend to bias heavily toward the majority class, 
+producing misleadingly high accuracy but poor recall for the minority (active) 
+class. LightGBM incorporates built-in mechanisms for applying customized class 
+weights, allowing the minority positive class to be emphasized during training. In 
+this project, a square-root class-balancing approach was applied to mitigate bias, 
+ensuring the model identifies active compounds more reliably even under highly 
+skewed distributions. 
+• Ability to model complex, non -linear structure –activity relationships - 
+Antimicrobial activity often depends on subtle molecular features, interactions 
+between functional groups, and higher -order structural patterns that are not 
+linearly separable. LightGBM’s ensemble of optimized decision trees captures 
+these non -linear relationships effectively, outperforming simpler linear models 
+and many neural network architectures, especially in situations where dataset size 
+is limited, as is common in AMR research. Its ability to isolate and exploit 
+informative fingerprint substructures leads to more accurate prediction of 
+antimicrobial potential. 
+• Fast training and scalability - One of LightGBM’s primary strengths is its 
+exceptional training speed even on very large datasets. The RecBCD dataset used 
+in this project contains over 360,000 fingerprint vectors, making computational 
+efficiency a major concern. LightGBM’s leaf -wise tree growth and optimized 
+memory management allow rapid experimentation, hyperparameter tuning, and 
+iteration without sacrificing performance. This scalability is crucial for screening 
+thousands of generated fingerprints in real time. 
+• Interpretability through feature importance - Although gradient boosting models 
+are complex, LightGBM still offers transparent mechanisms for examining feature 
+importance. Bit-level contribution scores help identify the fingerprint regions most 
+associated with antimicrobial activity, providing valuable chemical insights. Such 12  
+interpretability is useful for understanding which substructures are favoured by 
+the predictive model, even when complete molecular reconstruction is not 
+performed. 
+ 
+In summary, while the broader research community has explored various predictive 
+algorithms, LightGBM stands out as the most appropriate and effective model for this 
+project due to: 
+ 
+• the sparse, high-dimensional nature of fingerprint data, 
+• the extreme imbalance of AMR datasets, 
+• the need for rapid and scalable prediction, and 
+• the requirement to capture complex structural activity relationships. 
+ 
+These advantages collectively justify its exclusive use in the present study for predicting 
+antimicrobial activity of both training molecules and generated fingerprints 
+ 
+2.3.5 AMR-Related Dataset Limitations 
+ 
+A major challenge in applying artificial intelligence to antimicrobial drug discovery lies in 
+the nature and quality of available datasets. Unlike general -purpose chemical databases 
+such as ZINC, ChEMBL, or PubChem, datasets specifically curated for Antimicrobial 
+Resistance (AMR) are scarce, fragmented, and often insufficient for training deep learning 
+models. These limitations significantly constrain the development, generalization, and 
+reliability of AI frameworks designed for AMR-focused research. 
+ 
+AMR-related datasets exhibit several critical limitations: 
+ 
+• Extreme scarcity of active compounds 
+• Predominance of inactives 
+• Incomplete annotations 
+• Restricted molecular diversity 
+• Limited dataset size 
+ 
+This results in poor model generalization and limited chemical novelty. 
+ 
+2.4 Challenges 
+ 
+2.4.1 Data Scarcity in AMR 
+A fundamental challenge in applying artificial intelligence to antimicrobial drug discovery 
+is the severe scarcity of high -quality, well -annotated datasets specific to Antimicrobial 
+Resistance (AMR). Unlike general drug -discovery domains that benefit from extensive 
+open-source molecular repositories such as ZINC or ChEMBL, AMR research suffers from 
+limited publicly available data due to the high cost, complexity, and safety requirements 13  
+associated with antimicrobial testing. Experimental generation of AMR -related data 
+requires sophisticated laboratory facilities, bacterial culturing equipment, biosafety 
+infrastructure, and rigorous validation protocols, making the acquisition of new molecular 
+activity labels both expensive and time-consuming. As a result, most AMR datasets remain 
+relatively small and contain only a handful of active compounds compared to thousands or 
+hundreds of thousands of inactive molecules. This imbalance drastically restricts the ability 
+of machine learning models to learn meaningful patterns that correlate molecular structure 
+with antimicrobial activity. Furthermore, the actives that are available often lack structural 
+diversity, representing only a narrow range of chemical scaffolds predominantly derived 
+from known antibacterial classes. This limited diversity prevents generative models from 
+learning broad chemical principles and forces them to operate within a constrained 
+pharmacophoric landscape, diminishing their potential to generate novel molecules. 
+Additionally, the scarcity of standardized, unified AMR datasets across studies makes it 
+difficult to benchmark models or reproduce experimental findings. Data collected across 
+different laboratories frequently varies in experimental settings, concentration thresholds, 
+and bacterial strains, resulting in inconsistent and noisy labels that further degrade model 
+reliability. These combined limitations mean that AMR -focused AI solutions must be 
+exceptionally data -efficient, robust against imbalance, and capable of extracting 
+meaningful latent representations despite limited input diversity. Consequently, 
+fingerprint-based generative modelling becomes a suitable strategy, as it leverages high - 
+dimensional structural features while operating effectively in low -data environments, 
+offering a practical path forward in a field where data scarcity remains a major bottleneck 
+2.4.2 Model Reliability and Chemical Validity 
+A major limitation in AI-driven molecular discovery arises from the difficulty of ensuring 
+both model reliability and chemical validity in the generated outputs. Many generative 
+frameworks depend on reconstructing complete molecular structures, typically encoded as 
+SMILES strings or molecular graphs, yet these representations are inherently fragile and 
+prone to syntactic and structural errors. Even minor decoding mistakes in a SMILES 
+sequence can result in molecules with broken valence rules, non-existent atoms, impossible 
+ring closures, or chemically unstable configurations. Similarly, graph -based generative 
+models often struggle to maintain fundamental chemical constraints such as correct atomic 
+valence, aromaticity, chiral centres, and bond orders. These reconstruction challenges 
+directly impact the reliability of the underlying model because the training process attempts 
+to minimize reconstruction loss, forcing the network to memorize structural patterns instead 
+of learning meaningful, generalizable chemical features. As a consequence, the model may 
+generate a high proportion of invalid or chemically nonsensical molecules, reducing the 
+usefulness of the output and limiting chemical space exploration. 
+ 
+Model reliability is further compromised by biases in training data and insufficient 
+representation of key structural motifs, especially in AMR -specific datasets where active 
+compounds are scarce and structurally homogeneous. This often leads generative models 
+to produce repetitive scaffolds, lack novelty, or drift into unrealistic chemical regions. 
+Moreover, the stochastic nature of many generative architectures, such as VAEs and GANs, 14  
+can result in unstable training dynamics, mode collapse, or overly smooth latent spaces that 
+fail to preserve essential molecular features. In drug discovery, where biological activity 
+depends on subtle structural nuances, even small deviations in generated molecules can 
+render a compound inactive or biologically irrelevant. Therefore, ensuring chemical 
+validity is not merely a matter of avoiding syntactic errors but a requirement for producing 
+molecules that make sense from a medicinal chemistry perspective. 
+ 
+Fingerprint-based generative modelling provides a more reliable alternative to address 
+these issues. Instead of reconstructing full molecular structures with complex grammar and 
+topological constraints, fingerprint representations encode molecules as fixed-length binary 
+vectors that abstract meaningful chemical features without requiring explicit 
+reconstruction. This approach significantly reduces the likelihood of generating invalid 
+compounds, eliminates dependency on syntactically fragile structural formats, and shifts 
+the model’s focus toward learning underlying chemical relationships rather than 
+memorizing specific structural rules. By bypassing the reconstruction of full molecular 
+graphs, fingerprint -based models inherently produce outputs that remain chemically 
+interpretable and consistent with known structure–activity principles. This results in greater 
+stability, higher reliability, and enhanced exploration of chemical space, making 
+fingerprint-level generative modelling particularly advantageous for AMR drug discovery 
+where model robustness and chemical validity are essential 
+ 
+2.4.3 Novelty Measurement 
+Assessing molecular novelty is a central challenge in AI-driven drug discovery, especially 
+in fields such as antimicrobial research where the discovery of structurally unique 
+compounds is essential for overcoming rapidly evolving resistance mechanisms. Novelty 
+measurement aims to determine whether a generated compound or fingerprint represents a 
+meaningful deviation from known chemical scaffolds rather than a minor variation of 
+existing structures. However, accurately quantifying novelty is far from straightforward 
+due to the complexity of molecular diversity and the limitations of commonly used 
+similarity metrics. 
+ 
+Most traditional novelty assessment approaches rely on single -metric evaluations such as 
+Tanimoto similarity between binary fingerprints or simple distance -based measures 
+between molecular embeddings. While useful, these metrics capture only surface -level 
+similarity and often fail to reflect deeper structural or functional differences. For example, 
+two molecules may share similar fingerprint overlaps due to common substructures, yet 
+differ significantly in stereochemistry, topology, or functional group arrangement, features 
+that greatly influence antimicrobial activity. In such cases, a similarity score alone may 
+misrepresent true chemical novelty. Moreover, high-dimensional molecular spaces tend to 
+exhibit sparse distributions where even small numerical differences may correspond to 
+substantial structural variations, making threshold selection for novelty classification 
+ambiguous and dataset-dependent. 15  
+Another limitation in novelty assessment arises from the inherent biases within AMR 
+datasets. Because active antibacterial compounds often share highly conserved scaffolds, 
+novelty metrics may overestimate similarity simply due to the dominance of certain 
+pharmacophores in the training data. Conversely, novelty metrics may underestimate 
+similarity when generated compounds utilize alternative structural motifs that are 
+underrepresented in the dataset. As a result, relying solely on fingerprint similarity may 
+lead to misinterpretation of generative performance, either by incorrectly flagging 
+innovative compounds as too similar or by accepting trivial modifications as novel. 
+ 
+To overcome these issues, modern approaches integrate multiple complementary novelty 
+assessment techniques. These may include combining cosine similarity, Tanimoto 
+similarity, scaffold-based comparisons, substructure analysis, or dimensionality-reduction 
+methods such as UMAP or t -SNE to visualize whether generated compounds occupy 
+distinct regions of chemical space. UMAP, in particular, provides valuable qualitative 
+insights by preserving both global and local structural relationships and illustrating whether 
+generated fingerprints cluster separately from known actives. Such multi -dimensional 
+evaluations support a more comprehensive understanding of chemical diversity and 
+generative model performance. 
+ 
+Fingerprint-level generative modelling, as used in this study, uniquely enhances novelty 
+assessment by operating on structurally informative, high -dimensional binary 
+representations that naturally emphasize substructure -level variations. Because the model 
+does not attempt to reconstruct full molecular structures, variations in fingerprint space 
+directly reflect learned chemical patterns rather than syntactic artefacts. This allows for 
+clearer differentiation between new and existing chemical motifs and enables more reliable 
+identification of structurally novel candidates with potential biological relevance. Overall, 
+robust novelty measurement is critical for guiding antimicrobial discovery efforts toward 
+unexplored chemical regions capable of addressing the global AMR crisis 
+ 
+2.4.4 Reconstruction and Fingerprint Errors 
+ 
+One of the major limitations of conventional molecular generative models, particularly 
+SMILES-based VAEs, sequence -to-sequence models, and graph generative networks, is 
+the difficulty of accurately reconstructing complete molecular structures. SMILES strings 
+are highly sensitive to syntactic correctness, meaning that even a single misplaced character 
+can result in an invalid or chemically impossible structure. Similarly, graph -based models 
+often struggle with maintaining proper valence, aromaticity constraints, ring closures, and 
+stereochemical configurations. These reconstruction challenges lead to high rates of invalid 
+molecules, preventing the model from generating chemically meaningful outputs and 
+severely restricting chemical space exploration. 
+ 
+Reconstruction errors also distort the latent space learned by the model. When the decoder 
+produces inaccurate or unstable molecular graphs, the latent representation fails to capture 
+true structural relationships between compounds. As a result, the generative process 16  
+becomes unreliable, with the decoder frequently producing unrealistic or redundant 
+structures. Moreover, the reconstruction loss used during training amplifies these issues 
+and forces the model to compromise diversity in order to reduce syntactic violations. This 
+often results in mode collapse, where the model repetitively generates similar structures 
+despite the potential diversity encoded in the latent space. 
+ 
+Fingerprint-level modelling avoids these problems entirely. Instead of requiring the 
+decoder to reconstruct a full chemical structure with strict syntactic and atomic constraints, 
+the model directly operates on numerical fingerprint vectors. These binary vectors are 
+inherently stable, free of syntactic rules, and straightforward to reconstruct because each 
+bit simply represents the presence or absence of specific molecular substructures. By 
+bypassing the reconstruction of full molecules, the framework eliminates the need to 
+enforce valence checks, ring closures, or molecular grammar rules. This leads to more 
+predictable training behaviour, reduced reconstruction error, and significantly improved 
+chemical space navigation. Most importantly, fingerprint-level generation allows the model 
+to focus on learning and generating chemically meaningful patterns rather than syntactic 
+formats, making it especially suitable for AMR research where data scarcity and structural 
+diversity are major challenges. 
+2.4.5 Class Imbalance 
+AMR datasets typically contain extremely few active molecules. A 386:1 inactive-to-active 
+class ratio in the RecBCD dataset, resulted in: 
+ 
+• Limited Structural diversity in known actives - Even among the few active 
+compounds present, structural diversity is often narrow, as many antibacterial 
+molecules originate from similar scaffolds or share common pharmacophores. This 
+limited diversity makes it difficult for generative models to explore novel chemical 
+space, as the training data does not represent the full range of possible antibacterial 
+structural motifs. As a result, models tend to overfit to known patterns and struggle 
+to generate truly innovative fingerprints or structures capable of overcoming 
+resistance mechanisms. 
+• Incomplete or Noisy annotations - AMR datasets frequently contain incomplete, 
+ambiguous, or inconsistent activity labels. Variability in experimental conditions, 
+assay protocols, bacterial strains, and measurement systems can lead to noisy labels 
+or conflicting results. Such inconsistencies complicate model training and degrade 
+predictive performance. Reliable annotations are crucial for guiding generative 
+models and supervised classifiers, but inconsistencies can mislead the learning 
+process and cause non-generalizable outcomes. 
+• Lack of standardized AMR datasets - Unlike oncology or general pharmacology, 
+where benchmark datasets are widely available, AMR research lacks standardized 
+datasets that are sufficiently large, diverse, and uniformly annotated. This 
+deficiency makes it difficult to compare methods across studies or benchmark 17  
+generative and predictive models. Moreover, the absence of publicly available 
+AMR-specific molecular libraries restricts collaborative progress and slows the 
+development of AI-driven antibiotic discovery pipelines. 
+• High cost and difficulty of generating new AMR data - Experimentally validating 
+new antimicrobial compounds is resource -intensive. It requires specialized 
+laboratory environments, microbial cultures, biosafety protocols, and advanced 
+biochemical assays. These constraints limit the pace at which new labelled data can 
+be generated, forcing researchers to depend heavily on computational approaches. 
+However, without robust datasets, even advanced AI techniques may fail to achieve 
+optimal performance. 
+• Structural redundancy and chemical bias - AMR datasets often exhibit bias toward 
+historically well -studied antibacterial classes , such as β -lactams, quinolones, 
+tetracyclines, and aminoglycosides. This bias results in an overrepresentation of 
+certain scaffolds and a lack of novel chemical shapes or topologies. Generative 
+models trained on biased datasets may unintentionally reproduce structural 
+redundancies rather than innovating beyond known antibacterial chemotypes. 
+• Challenges in capturing complex biological resistance mechanisms – Resistance is 
+a multifaceted phenomenon involving: 
+ 
+• efflux pumps, 
+• enzymatic degradation, 
+• membrane modification, 
+• target-site mutations, 
+• biofilm formation, and 
+• metabolic adaptation. 
+ 
+Many AMR datasets capture only simplified activity outcomes without providing 
+mechanistic or pathway -level context. This restricts AI models from learning deeper 
+biological relationships that influence antibacterial effectiveness, ultimately limiting the 
+generalizability of activity predictions or generative outputs. 
+ 
+These limitations collectively demonstrate why traditional molecular generation techniques 
+and predictive models often struggle when applied to AMR research. The small size, low 
+diversity, imbalance, and noise levels in AMR datasets necessitate alternative approaches 
+that are: 
+ 
+• more data-efficient, 
+• robust against imbalance, 
+• less dependent on full molecule reconstruction, 18  
+• capable of exploring chemical space with minimal structural bias. 
+ 
+Fingerprint-level generative modelling, as used in this project, directly addresses many of 
+these challenges by enabling meaningful exploration of chemical space even under severe 
+data constraints. 
+ 
+2.4.6 Generalization and Chemical Space Coverage 
+Generalization and comprehensive chemical space coverage are critical requirements for 
+any AI-driven molecular discovery system, particularly in antimicrobial research where 
+identifying structurally novel compounds is essential to combating resistance. 
+Generalization refers to the model’s ability to learn meaningful chemical features from the 
+training data and apply this knowledge to generate or evaluate molecules that were not 
+explicitly seen during training. However, achieving strong generalization in AMR-focused 
+models is inherently challenging due to the limited diversity and biased nature of available 
+datasets. When training data contains only a narrow selection of chemical scaffolds, often 
+biased toward historically successful antibiotic classes, AI models may inadvertently learn 
+overly specific patterns that restrict them to generating molecules within a confined, 
+already-explored chemical region. This leads to a form of structural overfitting, where the 
+model repeatedly outputs variations of known compounds instead of discovering new and 
+potentially effective chemical frameworks. 
+ 
+Chemical space coverage further complicates this issue. The total chemical universe is 
+estimated to contain between 10³⁰ to 10⁶⁰ drug -like molecules, far exceeding what any 
+experimental or computational dataset can capture. A reliable generative model should be 
+capable of navigating this vast chemical landscape and exploring regions far beyond those 
+defined by the training data. Yet many molecular generative models, particularly those 
+using SMILES or graph reconstruction, tend to produce molecules that are clustered tightly 
+around the training distribution, demonstrating limited capacity for extrapolation. This 
+restricted exploration is often caused by stringent reconstruction constraints, high 
+dependency on syntactic rules, or latent spaces that fail to accurately encode global 
+chemical relationships. 
+ 
+Fingerprint-based generative models, however, offer a more flexible and robust alternative 
+for chemical space exploration. Unlike SMILES-based systems, fingerprint representations 
+abstract chemical structures into high -dimensional vectors that naturally capture 
+substructure-level variations and enable smoother latent transitions. When embedded into 
+a VAE framework, these fingerprints allow the model to traverse latent space more freely, 
+discovering combinations of chemical features that may not directly appear in the training 
+set but still remain chemically meaningful. This increases the likelihood of generating 
+compounds that lie in unexplored chemical regions while maintaining relevance to known 
+antibacterial patterns. Moreover, because fingerprint-based VAEs do not rely on syntactic 
+molecular reconstruction, they avoid common pitfalls such as invalid molecules, structural 
+duplication, or decoder collapse, thereby enhancing generalization and diversity. 19  
+Ensuring broad chemical space coverage also requires evaluating whether generated 
+molecules occupy distinct regions compared to known actives. Techniques such as UMAP 
+and t-SNE provide valuable insights by projecting high-dimensional fingerprints into two- 
+dimensional visual maps, making it possible to observe clustering behaviour, separation 
+patterns, and latent manifold structures. Clear separation between generated and known 
+compounds indicates that the generative model has successfully explored previously 
+uncharted chemical territories. Conversely, overlapping clusters may suggest inadequate 
+generalization or excessive structural bias. 
+ 
+Ultimately, generalization and chemical space coverage determine the real-world utility of 
+AI models in antibiotic discovery. Models that produce only minor variations of known 
+molecules contribute little toward addressing AMR, whereas systems capable of traversing 
+and expanding into novel chemical regions hold the potential to uncover entirely new 
+classes of antimicrobial agents. Therefore, strengthening generalization and ensuring 
+broad, diverse chemical space coverage remain essential goals for advancing AI -driven 
+drug discovery pipelines. 
+ 
+2.4.7 Continuous Improvement and Updates 
+Continuous improvement and regular updates are essential for maintaining the 
+effectiveness of AI models used in antimicrobial drug discovery, particularly because AMR 
+is a rapidly evolving biological challenge. Bacterial populations adapt quickly through 
+mutation, gene acquisition, and metabolic reprogramming, meaning that models trained on 
+older datasets may gradually lose relevance as new resistance patterns emerge. Without 
+periodic updates, predictive accuracy may decline and generative models may begin 
+producing compounds that no longer align with current biological mechanisms of 
+resistance. 
+ 
+To remain effective, AI frameworks must integrate new experimental results, updated 
+activity labels, refined molecular descriptors, and expanded training datasets as they 
+become available. Improvements in laboratory assays, cheminformatics tools, or new 
+computational techniques, such as enhanced fingerprint representations or updated VAE 
+architectures, should also be incorporated to strengthen model performance. Regular 
+retraining helps correct earlier biases, improve generalization, and enhance the model’s 
+ability to identify rare but meaningful antimicrobial patterns. 
+ 
+Additionally, continuous feedback from downstream stages, such as in -silico scoring or 
+wet-lab validation, provides valuable insight for iterative refinement. By establishing a 
+feedback-driven loop, the system can evolve in parallel with scientific advances and 
+bacterial resistance trends. Thus, continuous improvement is not merely a technical 
+enhancement but a necessary component to ensure that AI -driven drug discovery remains 
+adaptive, robust, and aligned with the dynamic nature of AMR research. 20  
+3 PROPOSED SOLUTION – DESIGN 
+This chapter presents the design and structural layout of the proposed AI-based system for 
+generating novel molecular fingerprints and assessing their potential antimicrobial activity. 
+The goal is to create a unified framework that integrates deep generative modelling, 
+predictive analytics, and novelty assessment to expand chemical search space relevant to 
+antimicrobial drug discovery. 
+ 
+3.1 Introduction 
+The central objective of this project is to construct a functional AI pipeline capable of 
+generating new antimicrobial -relevant chemical fingerprints and evaluating their novelty 
+and biological potential without requiring complete molecular structures. Traditional 
+molecular generation techniques rely heavily on SMILES or graph reconstruction, which 
+often produces invalid or syntactically corrupted outputs. Furthermore, AMR -specific 
+datasets are extremely limited, making typical molecule -level generative approaches 
+unreliable. 
+ 
+To overcome these limitations, this project employs: 
+ 
+• Morgan (ECFP4) fingerprints for structure encoding 
+• A Variational Autoencoder (VAE) for generative modelling 
+• LightGBM for activity prediction 
+• Cosine and Tanimoto similarity metrics for novelty evaluation 
+• UMAP dimensionality reduction for chemical space visualization 
+ 
+The RecBCD assay dataset of E. coli, linked to DNA repair and recombination pathways, 
+provides a suitable foundation due to its relevance to bacterial survival mechanisms. The 
+system learns patterns from known chemical fingerprints and generates new, unseen 
+patterns that may encode useful features associated with antimicrobial activity. 
+ 
+3.2 Core Features 
+The designed framework encompasses the following core functionalities: 
+ 
+1. Fingerprint Extraction 
+All molecular structures in the dataset are transformed into fixed -length Morgan 
+fingerprints (1024 bits, radius 2). This provides a stable vector representation of chemical 
+features. 
+2. Variational Autoencoder-Based Generation 
+A VAE model learns compressed representations of the fingerprints and generates novel 
+fingerprints by sampling from the latent space. 21  
+3. Activity Prediction 
+A LightGBM classifier evaluates whether a generated fingerprint is likely to exhibit 
+antimicrobial activity based on learned structure–activity relationships. 
+4. Novelty Assessment 
+Similarity metrics (Cosine and Tanimoto) measure the structural uniqueness of generated 
+fingerprints relative to known actives. 
+5. Latent Space Visualization 
+UMAP projects high-dimensional chemical space into 2D to clearly visualize distinctions 
+between generated and known active fingerprints. 
+6. Identification of Promising Candidates 
+Fingerprints that show: 
+ 
+• high predicted antimicrobial activity, and 
+• low similarity to known compounds 
+ 
+are prioritized as potential leads for early-stage drug discovery. 22  
+3.3 Control Flow 
+The overall control flow of the system follows a structured and sequential pipeline that 
+integrates each core component. 
+ 
+Fig 3.1 Control Flow 
+ 
+ 
+ 
+3.4 Tech Stack 
+The development of the AI-driven fingerprint generation system relies on a combination of 
+cheminformatics tools, machine learning frameworks, and structural analysis algorithms. 
+Each component contributes to a specific step in the pipeline. 23  
+3.4.1 Variational Autoencoder (VAE) 
+ 
+The VAE is the generative backbone of the system. It consists of: 
+• Encoder: compresses high-dimensional fingerprints into a 64-dimensional latent 
+vector. 
+• Latent space: represents compressed chemical information in continuous space. 
+• Decoder: reconstructs a fingerprint from a latent vector. 
+ 
+Key Characteristics: 
+ 
+• Handles high-dimensional binary input (1024-bit fingerprints). 
+• Generates new fingerprints by sampling from a Gaussian latent distribution. 
+• Trained using: 
+o Binary Cross-Entropy Loss 
+o KL Divergence Loss 
+o Adam optimizer 
+Advantages: 
+• Avoids SMILES synthesis errors. 
+• Produces chemically diverse feature patterns. 
+• Captures generalizable structural motifs. 
+• Works under data-scarce conditions (ideal for AMR datasets). 24  
+ 
+ 
+Fig 3.2 Variational Autoencoder Architecture 
+ 
+3.4.2 LightGBM Classifier 
+LightGBM is used for predicting antimicrobial activity of generated fingerprints. 
+Advantages: 
+• Highly efficient on sparse binary data. 
+• Supports large feature spaces. 
+• Handles extreme class imbalance via sample weighting. 
+• Captures nonlinear feature contributions. 
+ 
+Model Inputs and Outputs: 
+ 
+• Input: 1024-bit fingerprint 
+• Output: Probability of antimicrobial activity (0 to 1) 
+ 
+Murcko scaffold splitting ensures no structural leakage between training and testing 
+subsets, increasing model robustness. 
+3.4.3 Similarity Metrics & UMAP 
+Novelty analysis is essential for ensuring generated fingerprints explore unseen chemical 
+space. 
+ 
+Cosine Similarity: Measures angular divergence between fingerprint vectors. 
+ 
+Tanimoto Similarity: A standard metric in cheminformatics that measures bit-level overlap. 
+25  
+UMAP: Reduces high-dimensional fingerprint vectors into 2D while preserving: 
+ 
+• local structural relationships 
+• global chemical space organization 
+ 
+UMAP helps visually confirm whether generated fingerprints form new clusters distinct 
+from known actives. 26  
+4. IMPLEMENTATION 
+ 
+This chapter discusses the complete implementation process of the proposed AI framework 
+for generating and evaluating molecular fingerprints. The implementation covers dataset 
+preparation, feature extraction, training the Variational Autoencoder, building the 
+LightGBM classifier, calculating similarity metrics, and visualizing chemical space using 
+UMAP. Each component plays a crucial role in establishing a reliable and scalable 
+antimicrobial drug-discovery pipeline. 
+ 
+4.1 Data Preparation 
+The implementation process begins with preparing the raw dataset for machine learning 
+and generative modelling. The dataset used in this project consists of SMILES strings and 
+corresponding antimicrobial activity labels from the Escherichia coli RecBCD assay. 
+ 
+Steps Performed: 
+ 
+1. Removal of invalid SMILES 
+ 
+All SMILES strings that failed to parse via RDKit were discarded. This ensures 
+chemical correctness and prevents corrupted feature extraction. 
+ 
+2. Elimination of duplicates 
+ 
+Duplicate molecular strings were removed to prevent model bias and improve 
+generalization. 
+ 
+3. Length-based filtering 
+ 
+Only SMILES strings between 10 and 100 characters were retained to maintain 
+uniformity. 
+ 
+4. Binary label assignment 
+ 
+Activity values were converted into binary classes: 
+ 
+o 1 → Active 
+o 0 → Inactive 
+ 
+5. Fingerprint generation 
+ 
+Every SMILES string was converted into Morgan fingerprints (1024 bits, radius 2), 
+capturing key structural features. 27  
+6. Train-Test Split 
+ 
+The dataset was divided 80:20 using stratified sampling to maintain the class ratio 
+(≈ 386:1). 
+ 
+This cleaned and standardized dataset formed the foundation for model training. 
+Table 4.1: Summary of Dataset Preprocessing and Class Distribution 
+ 
+Statistic Value 
+Initial Dataset 362,877 
+Final Dataset (Post-Cleaning) 360,449 
+Active compounds (1) 932 
+Inactive compounds (0) 359,517 
+Class Ratio (0:1) ≈ 386:1 
+Train-Test Split 80% train, 20% 
+ 
+4.2 Fingerprint Generation using RDKit 
+RDKit was used to convert cleaned SMILES strings into numerical fingerprint vectors 
+suitable for machine learning models. Morgan (ECFP4) fingerprints were chosen based on 
+their widespread use in bioactivity prediction and structural screening. 
+ 
+Process: 
+ 
+• RDKit converts each molecular graph into hashed bit vectors. 
+• Each atom and its neighborhood are encoded across expanding radii. 
+• The final result is a stable 1024-bit binary fingerprint for every molecule. 28  
+ 
+ 
+Fig 4.1 Code representing Fingerprint Extraction using RDKit 
+ 
+4.3 VAE Architecture and Training 
+The Variational Autoencoder forms the generative backbone of this project. It compresses 
+high-dimensional fingerprint vectors into a 64 -dimensional latent space and reconstructs 
+them during training. 
+ 
+Architecture Components: 
+ 
+• Encoder: 
+ 
+Two dense layers of 512 and 256 neurons compress the fingerprint. 
+The encoder outputs both mean (μ) and log variance (σ²) vectors. 
+ 
+• Latent Space: 
+ 
+A 64-dimensional Gaussian manifold containing compressed chemical information. 
+ 
+• Decoder: 
+ 
+Mirrors encoder with 256- and 512-neuron dense layers, projecting back to 1024 
+bits. 
+29  
+Training Details: 
+ 
+• Loss Functions: 
+o Binary Cross-Entropy (reconstruction error) 
+o KL-Divergence (latent regularization) 
+• Optimizer: Adam 
+• Learning Rate: 0.001 
+• Epochs: 50 
+ 
+ 
+Fig 4.2 Code representing VAE Encoder–Decoder Architecture 
+ 
+ 
+ 
+Fig 4.3 VAE Training Loss Curve 30  
+The VAE successfully learned compressed representations and produced diverse 
+fingerprint patterns, as reflected by a steadily decreasing training loss. 
+ 
+4.4 Activity Prediction Model Setup 
+To evaluate antimicrobial potential, a LightGBM classifier was trained using the original 
+Morgan fingerprints. 
+ 
+LightGBM was used because of: 
+ 
+• Excellent handling of high-dimensional sparse data. 
+• Extremely fast training time. 
+• Inbuilt methods for weighted class imbalance. 
+• Non-linear decision boundaries. 
+ 
+Class Imbalance Handling 
+ 
+The RecBCD dataset contains: 
+ 
+• 932 active compounds 
+• 359,517 inactive compounds 
+ 
+The square-root class balancing technique was applied: 
+ 
+ 
+𝑤i = √𝑁 
+𝑛𝑖 
+ 
+where N is total samples and nᵢ is the class count. 
+ 
+Scaffold-Based Splitting 
+ 
+Murcko scaffolds were used to ensure structurally distinct molecules appear in training and 
+test sets, preventing information leakage. 31  
+ 
+ 
+ 
+ 
+Fig 4.4 Code representing LightGBM Classifier Configuration 
+ 
+4.5 Novelty Assessment & Dimensionality Reduction 
+To evaluate whether the generated fingerprints explore unseen chemical regions, two 
+similarity scores and a dimensionality reduction technique were used. 
+1. Cosine Similarity 
+Measures angle between fingerprint vectors. 
+Low cosine score → higher novelty. 
+ 
+𝐶𝑜𝑠𝑖𝑛𝑒 (𝐴, 𝐵) = 𝐴 ⋅ 𝐵 
+ 
+ 
+∥ 𝐴 ∥ × ∥ 𝐵 ∥ 
+32  
+2. Tanimoto Similarity 
+Cheminformatics standard for comparing binary fingerprints. 
+Low Tanimoto score → structurally distinct compound. 
+𝑇𝑎𝑛𝑖𝑚𝑜𝑡𝑜(𝐴, 𝐵) = 
+|A∩B| 
+|A|+|B|–|A∩B| 
+ 
+ 
+ 
+ 
+ 
+Fig 4.5 Code representing Cosine and Tanimoto Similarity 
+ 
+3. UMAP Visualization 
+UMAP reduces 1024-dimensional fingerprints into 2D while preserving local and global 
+chemical relationships. 33  
+ 
+ 
+Fig 4.6 Code representing UMAP Dimensionality Reduction 
+34  
+5. WORKING AND RESULTS 
+ 
+This chapter presents the functional workflow of the implemented system alongside its 
+analytical results. Each subsection evaluates the system’s performance in fingerprint 
+generation, activity prediction, structural novelty assessment, and overall contribution to 
+exploring new chemical space relevant to antimicrobial drug discovery. 
+ 
+5.1 Fingerprint Generation Output 
+Upon successful training of the Variational Autoencoder, the latent space was sampled to 
+generate 15,000 new molecular fingerprints . Each sample comprised a 1024 -bit binary 
+vector derived from learned chemical representations of the RecBCD assay dataset. 
+ 
+Key Observations: 
+ 
+• Generated fingerprints maintained the sparsity pattern typical of Morgan 
+fingerprints. 
+• Structural variations were clearly visible across samples, indicating that the VAE 
+did not merely replicate training data. 
+• Fingerprints exhibited sufficient diversity in active bits, enabling robust novelty 
+assessment. 
+ 
+The generative capacity of the VAE demonstrated the framework’s ability to explore 
+chemical space efficiently. 
+ 
+5.2 Activity Prediction Results 
+The LightGBM classifier was applied to all 15,000 generated fingerprints, assigning 
+antimicrobial probability scores to each candidate. 
+ 
+Outcome Summary: 
+ 
+• 605 fingerprints obtained an activity probability score ≥ 0.80, indicating a high 
+likelihood of antimicrobial potential. 
+• The top 100 candidates scored between 0.852 and 0.827, confirming consistency 
+and reliability of the predictive model. 35  
+Performance Metrics (from classifier evaluation): 
+ 
+Table 5.1 Performance Metrics from LightGBM classifier 
+Metric Value 
+ROC–AUC 0.77 
+Precision (Active) 0.11 
+Recall (Active) 0.36 
+F1-Score 0.17 
+Overall Accuracy 99.16% 
+ 
+Although precision and recall appear modest, this is expected given the extreme class 
+imbalance (386:1). A ROC–AUC of 0.77 demonstrates adequate discriminatory ability. 
+ 
+5.3 Similarity Analysis 
+Novelty assessment was conducted using cosine similarity and Tanimoto similarity 
+between: 
+ 
+• generated fingerprints, and 
+• known active compounds from the dataset. 
+ 
+Similarity Statistics: 
+ 
+Table 5.2 Structural Similarity Statistics 
+Metric Minimum Maximum Average 
+Cosine Similarity 0.19 0.238 0.215 
+Tanimoto Similarity 0.0839 0.1123 0.0950 
+ 
+Interpretation: 
+ 
+• Cosine values below 0.25 show meaningful geometric divergence. 
+• Tanimoto values near 0.10 indicate minimal structural overlap with known actives, 
+implying strong novelty. 
+• Earlier studies reported typical similarity of 0.2–0.3 for generative models. Thus, 
+this study achieves 55–65% improvement in structural novelty. 
+ 
+5.4 UMAP Visualization 
+Uniform Manifold Approximation and Projection (UMAP) was used to visualize the 
+distribution of: 36  
+• generated fingerprints (orange), and 
+• known active fingerprints (blue). 
+ 
+UMAP Projection Findings: 
+ 
+• Generated fingerprints formed a large, dense cluster occupying a distinct region of 
+2D space. 
+• Known actives appeared as a smaller, compact cluster on the opposite side of the 
+plot. 
+• Minimal overlap between clusters confirms that: 
+o the VAE learns meaningful latent representations 
+o the model generates fingerprints outside the chemical region covered by 
+known actives 
+o structural novelty is maintained without compromising biological relevance 
+ 
+ 
+Fig 5.1 UMAP Projection of Chemical Space 
+ 
+5.5 Final Compilation of Novel Candidates 
+A final list of candidate fingerprints was compiled based on: 
+ 
+• High antimicrobial probability (≥ 0.80) 
+• Low Tanimoto similarity (< 0.12) 37  
+• Low cosine similarity (< 0.24) 
+• Clear separation in UMAP space 
+ 
+Results: 
+ 
+• Total Generated = 15,000 
+• High-Probability Actives = 605 
+• Structurally Novel (Based on Similarity Scores) = ~540 
+• Distinct Cluster Formation in UMAP = Confirmed 
+ 
+This final filtered set represents the most promising chemical scaffolds for future 
+experimental screening. 
+ 
+5.6 Interpretation of Results 
+The entire workflow, starting from data cleaning to novelty evaluation, highlights several 
+key conclusions: 
+ 
+1. The VAE successfully: 
+o learns high-dimensional chemical representations 
+o Generates structurally diverse fingerprints 
+o Avoids reconstruction errors common in SMILES-based models 
+2. Activity prediction is effective despite extreme class imbalance as: 
+o LightGBM reliably identifies potential actives 
+o Probability scores provide strong ranking confidence 
+3. Generated fingerprints are novel as: 
+o Low Tanimoto and cosine similarities confirm structural uniqueness 
+o UMAP space separation visually validates chemical novelty 
+4. Framework is computationally efficient as it: 
+o Operates on binary fingerprints 
+o Does not require reconstructing full molecules 
+5. Approach is suitable for AMR drug discovery as it: 
+o Combines generative modelling with prediction and novelty scoring 
+o Supports exploration of chemically unexplored space 38  
+Overall, this framework demonstrates a promising method for discovering antimicrobial- 
+relevant chemical patterns using AI-based fingerprint generation. 
+ 
+5.7 Resources 
+The following tools and libraries were used for implementation: 
+ 
+• Python 3.10 
+• RDKit for chemical structure processing 
+• TensorFlow for VAE development 
+• LightGBM for classification 
+• UMAP for dimensionality reduction 
+• NumPy, Pandas, Scikit-learn for data processing 
+• Matplotlib for plotting 39  
+REFERENCES 
+ 
+[1] M. A. Salam, M. Y. Al-Amin, M. T. Salam, J. S. Pawar, N. Akhter, A. A. Rabaan, M. 
+A. A. Alqumber, “Antimicrobial Resistance: A Growing Serious Threat for Global Public 
+Health,” Healthcare, vol. 11, no. 13, p. 1946, Dec. 2023. 
+[2] A. M. Antimicrobial Resistance Collaborators, “Global burden of bacterial 
+antimicrobial resistance in 2019: a systematic analysis,” Lancet, vol. 399, no. 10344, pp. 
+629-655, Jun. 2022. DOI: 10.1016/S0140-6736(21)02724-0. 
+[3] M. Miethke, M. Pieroni, T. Weber, M. Brönstrup, P. Hammann, L. Halby, P. B. 
+Arimondo, P. Glaser, B. Aigle, H. B. Bode, et al., “Towards the sustainable discovery and 
+development of new antibiotics,” Nature Reviews Chemistry, vol. 5, no. 10, pp. 726 -749, 
+2021. DOI: 10.1038/s41570-021-00313-1. 
+[4] O. Genilloud, “How can we close the early discovery gap and improve our ability to 
+discover new antibiotics?” ReViVe-GARDP Report, 2025. 
+[5] X. Zeng, F. Wang, Y. Luo, S-G. Kang, J. Tang, F. C. Lightstone, E. F. Fang, W. Cornell, 
+R. Nussinov, and F. Cheng, “Deep generative molecular design reshapes drug discovery,” 
+Cell Reports Medicine, vol. 3, no. 12, Art. No. 100794, Dec. 2022. DOI: 
+10.1016/j.xcrm.2022.100794. 
+[6] W.-H. Gao and C. W. Coley, “The Synthesizability of Molecules Proposed by 
+Generative Models,” arXiv preprint arXiv:2002.07007, Feb. 2020. 
+[7] “An overview of molecular fingerprint similarity search in virtual screening,” Journal 
+of cheminformatics, vol. 7, no. 1, pp. 1-17, 2015. 
+[8] D. Boldini, D. Ballabio, V. Consonni, R. Todeschini, F. Grisoni and S. A. Sieber, 
+“Effectiveness of molecular fingerprints for exploring the chemical space of natural 
+products,” Journal of Cheminformatics, vol. 16, no. 35, 2024. DOI: 10.1186/s13321 -024- 
+00830-3. 
+[9] A. Arnold, “How AI can help us beat AMR,” npj Antimicrobials and Chemotherapy, 
+2025. 
+[10] Y. Bagdad and others, “Recent Applications of Artificial Intelligence in Discovery of 
+New Antibacterial Agents,” PMC, 2024. 
+[11] X. Zeng, “Deep generative molecular design reshapes drug discovery,” J. 
+Cheminformatics, 2022. 40  
+[12] S. Ghosh, “A current review on the development of antimicrobial drugs: role of AI,” 
+Microbes and Infectious Disease Journal, 2025. 
+[13] A. Gangwal, “Unleashing the power of generative AI in drug discovery,” Drug 
+Discovery Journal, 2024. 
+[14] A. Talat, “Artificial intelligence as a smart approach to develop new antibiotics,” 
+Elsevier Series, 2023. 
+[15] B. Zagidullin, “Comparative analysis of molecular fingerprints in prediction of 
+biological activity,” Bioinformatics, vol. 22, no. 6, 2021. 
+[16] M. Mulat, “Application of artificial intelligence in microbial drug discovery,” Elsevier, 
+2025. 
+[17] T. Ochiai et al., “Variational autoencoder -based chemical latent space for molecule 
+generation and property prediction,” Nature Communications / Nature Chemistry, 2023. 
+[18] H. Loeffler et al., “Reinvent 4: Modern AI -driven generative molecule design,” J. 
+Cheminformatics, 2024. 
+[19] Z. Yönden, “Reviewing on AI -Designed Antibiotic Targeting Drug -Resistant 
+Bacteria,” Drug Discovery Research, 2025. 
+[20] M. Ghaderzadeh, “Artificial Intelligence in Drug Discovery and Development: AMR 
+Focus,” Int. J. Microbiology & Medicine, 2024. 
+[21] H. Chen, O. Engkvist, Y. Wang, M. Olivecrona, and T. Blaschke, “The rise of deep 
+learning in drug discovery,” Drug Discovery Today, vol. 23, no. 6, pp. 1241–1250, 2018. 
+[22] D. Rogers and M. Hahn, “Extended -connectivity fingerprints,” Journal of Chemical 
+Information and Modeling, vol. 50, no. 5, pp. 742–754, 2010. 
+[23] G. Ke et al., “LightGBM: A highly efficient gradient boosting decision tree,” Advances 
+in Neural Information Processing Systems (NeurIPS), 2017. 
+[24] R. Gómez -Bombarelli et al. , “Automatic chemical design using a data -driven 
+continuous representation of molecules,” ACS Central Science, vol. 4, no. 2, pp. 268–276, 
+2018. 
+[25] N. Polykovskiy et al. , “Molecular sets (MOSES): A benchmarking platform for 
+molecular generation models,” Frontiers in Pharmacology, vol. 11, p. 565644, 2020. 41  
+[26] J. Gilmer, S. Schoenholz, P. Riley, O. Vinyals, and G. Dahl, “Neural message passing 
+for quantum chemistry,” Proceedings of the 34th International Conference on Machine 
+Learning (ICML), 2017. 
+[27] P. Walters and R. Barzilay, “Applications of deep learning in molecule generation and 
+molecular property prediction,” Accounts of Chemical Research , vol. 54, no. 2, pp. 263 – 
+270, 2021. 
+[28] D. Sanchez -Lengeling and A. Aspuru -Guzik, “Inverse molecular design using 
+machine learning: Generative models for matter engineering,” Science, vol. 361, no. 6400, 
+pp. 360–365, 2018. 

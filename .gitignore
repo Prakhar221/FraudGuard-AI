@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv_fraud_311/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+.vercel/
+
+# VS Code & IDEs
+.vscode/
+.idea/
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Large datasets (>50MB triggers GitHub upload limits)
+data/raw/
+*.csv.gz
+
+# CatBoost & Training info
+catboost_info/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

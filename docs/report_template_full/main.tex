@@ -1,0 +1,133 @@
+\documentclass[12pt, a4paper]{report}
+
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage[colorlinks=false, pdfborder={0 0 0}, hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{listings}
+
+\titleformat{\chapter}[display]
+  {\centering\fontsize{14}{16.8}\bfseries}
+  {\MakeUppercase{\chaptertitlename\ \thechapter}}
+  {10pt}
+  {\MakeUppercase}
+
+\titleformat{\section}
+  {\fontsize{12}{14.4}\bfseries}
+  {\thesection}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\fontsize{12}{14.4}\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titleformat{\subsubsection}
+  {\fontsize{12}{14.4}\bfseries}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+\usepackage{caption}
+\DeclareCaptionFont{ninept}{\fontsize{9}{10.8}\selectfont}
+\captionsetup[figure]{font=ninept, position=bottom, justification=centering}
+\captionsetup[table]{font=ninept, position=top, justification=centering}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\thepage}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \cfoot{\thepage}
+}
+
+\usepackage{setspace}
+\setstretch{1.15}
+\usepackage{pdfpages}
+\usepackage{tikz}
+% Removed lipsum
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    frame=single,
+    rulecolor=\color{black},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1
+}
+
+\begin{document}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  \draw[line width=1.5pt] 
+    ([xshift=1cm,yshift=-1cm]current page.north west) 
+    rectangle 
+    ([xshift=-1cm,yshift=1cm]current page.south east);
+\end{tikzpicture}
+
+\begin{center}
+    \vspace*{2cm}
+    {\fontsize{18}{21.6}\bfseries \MakeUppercase{AI Enhanced Fingerprint Generation for Antimicrobial Drug Discovery}}\\[1.5cm]
+    {\fontsize{14}{16.8} A Major Project Report}\\[0.5cm]
+    {\fontsize{12}{14.4} submitted in partial fulfillment of the requirements}\\[0.5cm]
+    {\fontsize{12}{14.4} for the award of the degree of}\\[1.5cm]
+    {\fontsize{14}{16.8}\bfseries BACHELOR OF TECHNOLOGY}\\[0.5cm]
+    {\fontsize{12}{14.4} in}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries COMPUTER SCIENCE AND ENGINEERING}\\[1.5cm]
+    {\fontsize{12}{14.4} Submitted by}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries Hrishabh Bhandari (10325502722)}\\
+    {\fontsize{14}{16.8}\bfseries Gaurav Gupta (06925502722)}\\
+    {\fontsize{14}{16.8}\bfseries Anith Sivarajan (06825502722)}\\[1.5cm]
+    {\fontsize{12}{14.4} Under the Supervision of}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries Dr. Devendra Gautam}\\[0.5cm]
+    {\fontsize{12}{14.4} Assistant Professor}\\[2cm]
+    {\fontsize{14}{16.8}\bfseries DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}\\[0.5cm]
+    {\fontsize{14}{16.8}\bfseries JIMS Engineering Management Technical Campus, Greater Noida}\\[0.5cm]
+    {\fontsize{12}{14.4} 2025-2026}
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\input{chapters/0_frontmatter.tex}
+
+\tableofcontents
+\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\clearpage
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+\clearpage
+
+\pagenumbering{arabic}
+
+\input{chapters/1_introduction.tex}
+\input{chapters/2_literature_review.tex}
+\input{chapters/3_proposed_solution.tex}
+\input{chapters/4_implementation.tex}
+\input{chapters/5_results.tex}
+\input{chapters/6_appendix.tex}
+\input{chapters/7_extra_padding.tex}
+
+\clearpage
+\addcontentsline{toc}{chapter}{References}
+\begin{thebibliography}{99}
+    \bibitem{ref1} Author, ``AI in Drug Discovery,'' \textit{Journal}, 2024.
+\end{thebibliography}
+
+\end{document}

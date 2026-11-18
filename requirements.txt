@@ -1,0 +1,9 @@
+numpy
+requests
+streamlit
+streamlit-lottie
+pandas
+matplotlib
+
+
+xgboost
