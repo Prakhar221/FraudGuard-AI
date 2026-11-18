@@ -11,14 +11,6 @@ To bridge the gap between "black-box" ML and human analysts, it actively incorpo
 
 ---
 
-## 👥 Contributors (Major Project)
-- **Prakhar Bhardwaj**
-- **Sourabh Kumar Verma**
-- **Satyam Kumar**
-- **Vivek Singh Bisht**
-
----
-
 ## 🌟 Key Performance Features
 - **Real-Time Prediction API:** Powered by a high-performance FastAPI backend capable of processing concurrent transaction evaluations.
 - **Interactive Command Center:** A beautiful Streamlit dashboard capable of scanning single transactions and processing bulk historical CSV batches.

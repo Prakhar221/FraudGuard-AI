@@ -205,12 +205,6 @@ with st.sidebar:
     st.info("""
     **Real-Time Fraud Detection System**
     Detects anomalies in financial transactions using a Heterogeneous Penta-Ensemble Framework.
-
-    **Developed by:**
-    - **Prakhar Bhardwaj**
-    - **Sourabh Kumar Verma**
-    - **Satyam Kumar**
-    - **Vivek Singh Bisht**
     """)
 
 # Main Content
