@@ -17,19 +17,8 @@ Run this command from the project root to start the intelligent prediction serve
 
 ---
 
-## Step 2: Start the Premium Next.js Frontend (Command Center Dashboard)
-Open a **new** terminal window, navigate to the `frontend-next` folder, install Node dependencies, and start the development server:
-```powershell
-cd "c:\Users\prakh\OneDrive\Desktop\proj\FraudGuardAi\frontend-next"
-npm install
-npm run dev
-```
-The React Next.js Dashboard will launch in your browser at `http://localhost:3000`.
-
----
-
-## Step 3: Start the Streamlit Frontend (Alternative Dashboard)
-If you prefer to run the Streamlit client, open a **new** terminal window, navigate to the project root, and run:
+## Step 2: Start the Frontend Dashboard (Streamlit)
+Open a **new** terminal window, navigate to the project root, and run:
 ```powershell
 cd "c:\Users\prakh\OneDrive\Desktop\proj\FraudGuardAi"
 .\.venv_fraud_311\Scripts\python -m streamlit run web/app.py
@@ -38,7 +27,7 @@ The Streamlit app will launch in your browser at `http://localhost:8501`.
 
 ---
 
-## Step 4: Train Model (Optional)
+## Step 3: Train Model (Optional)
 If you need to retrain the Heterogeneous Stacking Ensemble model:
 ```powershell
 cd "c:\Users\prakh\OneDrive\Desktop\proj\FraudGuardAi"
